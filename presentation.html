@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Machine Learning Yearning 
+
+<img src="images/machine_learning_yearning.png" width="400">
+
+---
+
+# Agenda
+
+1. Introduction 
+2. Author  
+3. 
+
+---
+
+# Author
+
+The author Andrew Ng is the former head of advanced analytics at Google and now at Baidu. He also created Coursera and more..
+
+<img src="images/andrew_ng.jpeg" width="400">
+
+---
+
+# Introduction
+---
+
+# Build your first system quickly, then iterate
+
+Andrew Ng emphasizes throughout the book that it is crucial to iterate quickly since machine learning is an iterative process. 
+
+1. Start off with some *idea* on how to build the system.
+2. Implement the idea in *code* .
+3. Carry out an *experiment* which tells me how well the idea worked. (Usually my first few
+ideas don’t work!) Based on these learnings, go back to generate more ideas, and keep on
+iterating.
+
+You should build a first prototype in just a few days and then clues will pop up that show you the most promising direction to improve the performance of the prototype. In the next iteration, you will improve the system based on one of these clues and build the next version of it. You will do this again and again. Other concepts of the book, build upon this principle. The faster you can iterate the more progress you will make.
+
+
+<img src="images/iteration.png" width="200">
+
+---
+
+# Splitting the data 
+
+Your team gets a large training set by downloading pictures of cats (positive examples) and
+non-cats (negative examples) off of different websites. They split the dataset 70%/30% into
+training and test sets. Using this data, they build a cat detector that works well on the
+training and test sets.
+But when you deploy this classifier into the mobile app, you find that the performance is
+really poor!
+
+--
+
+<img src="images/omg.png" width="400">
+
+---
+
+# Splitting the data
+
+What happened?
+
+You figure out that the pictures users are uploading have a different look than the website
+images that make up your training set: Users are uploading pictures taken with mobile
+phones, which tend to be lower resolution, blurrier, and poorly lit. Since your training/test
+sets were made of website images, your algorithm did not generalize well to the actual
+distribution you care about: mobile phone pictures.
+
+---
+
+# Splitting the data
+
+We usually define:
+
+• Training set — Which you run your learning algorithm on.
+
+• Dev (development) set — Which you use to tune parameters, select features, and make other decisions regarding the learning algorithm. Sometimes also called the hold-out cross validation set.
+
+• Test set — which you use to evaluate the performance of the algorithm, but not to make
+any decisions regarding what learning algorithm or parameters to use.
+
+--
+
+>*Choose dev and test sets to reflect data you expect to get in the future and want to do well on.*
+
+---
+
+# Your dev and test sets should come from the same distribution
+
+You have your cat app image data segmented into four regions, based on your largest
+markets: (i) US, (ii) China, (iii) India, and (iv) Other. To come up with a dev set and a test
+set, say we put US and India in the dev set; China and Other in the test set. In other words,
+we can randomly assign two of these segments to the dev set, and the other two to the test
+set, right?
+
+--
+
+Once you define the dev and test sets, your team will be focused on improving dev set
+performance. Thus, the dev set should reflect the task you want to improve on the most: To
+do well on all four geographies, and not only two.
+
+<img src="images/wrong.png" width="200">
+
+---
+
+# Establish a single-number evaluation metric for your team to optimize
+
+Classification accuracy is an example of a  single-number evaluation metric: You run
+your classifier on the dev set (or test set), and get back a single number about what fraction
+of examples it classified correctly. According to this metric, if classifier A obtains 97%
+accuracy, and classifier B obtains 90% accuracy, then we judge classifier A to be superior.
+
+---
+
+# Optimizing and satisficing metrics
+
+Suppose you care about both the accuracy and the running time of a learning algorithm. You
+need to choose from these three classifiers:
+
+<img src="images/running_time.png" width="200">
+
+---
+
+# Optimizing and satisficing metrics
+
+It seems unnatural to derive a single metric by putting accuracy and running time into a
+single formula, such as:
+
+>Accuracy - 0.5*RunningTime
+
+Here’s what you can do instead: First, define what is an “acceptable” running time. Lets say
+anything that runs in 100ms is acceptable. Then, maximize accuracy, subject to your
+classifier meeting the running time criteria. Here, running time is a “satisficing
+metric”—your classifier just has to be “good enough” on this metric, in the sense that it
+should take at most 100ms. Accuracy is the “optimizing metric.”
+
+If you are trading off N different criteria, such as binary file size of the model (which is
+important for mobile apps, since users don’t want to download large apps), running time,
+and accuracy, you might consider setting N-1 of the criteria as “satisficing” metrics. I.e., you
+simply require that they meet a certain value. Then define the final one as the “optimizing”
+metric. For example, set a threshold for what is acceptable for binary file size and running
+time, and try to optimize accuracy given those constraints.
+
+Once your team is aligned on the evaluation metric to optimize, they will be able to make
+faster progress.
+
+---
+
+# Error analysis: Look at dev set examples to evaluate ideas
+
+When you play with your cat app, you notice several examples where it mistakes dogs for
+cats. Some dogs do look like cats!
+
+A team member proposes incorporating 3rd party software that will make the system do
+better on dog images. These changes will take a month, and the team member is
+enthusiastic. Should you ask them to go ahead?
+
+<img src="images/dog.png" width="400">
+
+---
+
+# Error analysis: Look at dev set examples to evaluate ideas
+
+1. Gather a sample of 100 dev set examples that your system  misclassified.  I.e., examples that your system made an error on.
+
+2. Look at these examples manually, and count what fraction of them are dog images.
+
+--
+
+The process of looking at misclassified examples is called **error analysis**.
+
+---
+
+# Evaluating multiple ideas in parallel during error analysis
+
+Your team has several ideas for improving the cat detector:
+
+- Fix the problem of your algorithm recognizing dogs as cats.
+- Fix the problem of your algorithm recognizing great cats (lions, panthers, etc.) as house
+cats (pets).
+- Improve the system’s performance on blurry images.
+
+--
+
+You can efficiently evaluate all of these ideas in parallel. I usually create a spreadsheet and
+fill it out while looking through ~100 misclassified dev set images. I also jot down comments
+that might help me remember specific examples.
+
+<img src="images/spreadsheet_ideas.png" width="600">
+
+---
+
+# Evaluating multiple ideas in parallel during error analysis
+
+Suppose you finish carrying out error analysis on 100 misclassified dev set examples and get
+the following:
+
+<img src="images/final_spreadsheet.png" width="600">
+
+You now know that working on a project to address the Dog mistakes can eliminate 8% of
+the errors at most. Working on Great Cat or Blurry image errors could help eliminate more
+errors. Therefore, you might pick one of the two latter categories to focus on. If your team
+has enough people to pursue multiple directions in parallel, you can also ask some engineers
+to work on Great Cats and others to work on Blurry images.
+
+---
+
+# If you have a large dev set, split it into two subsets, only one of which you look at
+
+Suppose you have a large dev set of 5,000 examples in which you have a 20% error rate.
+Thus, your algorithm is misclassifying ~1,000 dev images. It takes a long time to manually
+examine 1,000 images, so we might decide not to use all of them in the error analysis.
+
+Consider splitting the dev set into an **Eyeball** dev set, which you will manually examine, and a **Blackbox** dev set, which you will not manually examine. If performance on the
+Eyeball dev set is much better than the Blackbox dev set, you have overfit the Eyeball dev
+set and should consider acquiring more data for it.
+
+<img src="images/eye.png" width="200">
+
+# How big should the Eyeball and Blackbox dev sets be?
+
+---
+
+# Work on problems that humans can do well
+
+1. Ease of obtaining data from human labelers.​ For example, since people recognize
+cat images well, it is straightforward for people to provide high accuracy labels for your
+learning algorithm.
+
+2. Error analysis can draw on human intuition.​ Suppose a speech recognition
+algorithm is doing worse than human-level recognition. Say it incorrectly transcribes an
+audio clip as “This recipe calls for a ​ pear ​ of apples,” mistaking “pair” for “pear.” You can
+draw on human intuition and try to understand what information a person uses to get the
+correct transcription, and use this knowledge to modify the learning algorithm.
+
+3. Use human-level performance to estimate the optimal error rate and also set
+a “desired error rate.”​ Suppose your algorithm achieves 10% error on a task, but a person
+achieves 2% error. Then we know that the optimal error rate is 2% or lower and the
+avoidable bias is at least 8%. Thus, you should try bias-reducing techniques.
+
+---
+
+# Work on problems that humans can do well
+
+There are some tasks that even humans aren’t good at. With these applications, we run into the following problems:
+•
+It is harder to obtain labels.​ For example, it’s hard for human labelers to annotate a
+database of users with the “optimal” book recommendation. If you operate a website or
+app that sells books, you can obtain data by showing books to users and seeing what they
+buy. If you do not operate such a site, you need to find more creative ways to get data.
+Page 66
+Machine Learning Yearning-Draft
+Andrew Ng• Human intuition is harder to count on.​ For example, pretty much no one can
+predict the stock market. So if our stock prediction algorithm does no better than random
+guessing, it is hard to figure out how to improve it.
+• It is hard to know what the optimal error rate and reasonable desired error
+rate is. ​ Suppose you already have a book recommendation system that is doing quite
+well. How do you know how much more it can improve without a human baseline?
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
