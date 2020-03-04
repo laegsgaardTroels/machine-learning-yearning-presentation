@@ -1,3 +1,3 @@
 # Machine Learning Yearning Presentation
 
-![](images/machine_learning_yearning.png)
+<img src="images/machine_learning_yearning.png" width="400">
