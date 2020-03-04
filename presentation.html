@@ -235,8 +235,21 @@ Andrew Ng emphasizes throughout the book that it is crucial to iterate quickly s
 ideas don’t work!) Based on these learnings, go back to generate more ideas, and keep on
 iterating.
 
+<<<<<<< HEAD
 This is an iterative process. The faster you can go round this loop, the faster you will make
 progress.
+=======
+---
+
+# Optimizing and satisficing metrics
+
+If you are trading off N different criteria, such as binary file size of the model (which is
+important for mobile apps, since users don’t want to download large apps), running time,
+and accuracy, you might consider setting N-1 of the criteria as “satisficing” metrics. I.e., you
+simply require that they meet a certain value. Then define the final one as the “optimizing”
+metric. For example, set a threshold for what is acceptable for binary file size and running
+time, and try to optimize accuracy given those constraints.
+>>>>>>> 68dcd9150d11c4a23bda100bbaca4c0290d40692
 
 <center>
     <img src="images/iteration.png" width="200">
@@ -313,6 +326,8 @@ the following:
 
 --
 
+--
+
 You now know that working on a project to address the Dog mistakes can eliminate 8% of
 the errors at most. Working on Great Cat or Blurry image errors could help eliminate more
 errors. Therefore, you might pick one of the two latter categories to focus on. If your team
@@ -355,8 +370,13 @@ hyperparameters. However, you should avoid looking at it with your eyes.
 
 ---
 
+Explicitly splitting your dev set into Eyeball and Blackbox dev sets allows you to tell when your manual error analysis process is causing you to overfit the Eyeball portion of your data.
+
+---
+
 # How big should the Eyeball and Blackbox dev sets be?
 
+<<<<<<< HEAD
 The Eyeball dev set should be big enough so that your algorithm misclassifies enough
 examples for you to analyze (For example, I’ve rarely seen anyone manually analyze more than 1,000 errors.). A Blackbox dev set of 1,000-10,000 examples is sufficient
 for many applications.
@@ -370,6 +390,17 @@ having only an Eyeball dev set is that the risk of overfitting the dev set is gr
 <center>
     <img src="images/eye.png" width="200">
 </center>
+=======
+1. Your Eyeball dev set should be large enough to give you a sense of your algorithm’s major error categories. 
+
+2. The Eyeball dev set should be big enough so that your algorithm misclassifies enough examples for you to analyze. A Blackbox dev set of 1,000-10,000 examples is sufficient for many applications.
+
+3. If your dev set is not big enough to split this way, just use the entire dev set as an Eyeball dev set for manual error analysis, model selection, and hyperparameter tuning.
+
+--
+
+Between the Eyeball and Blackbox dev sets, I consider the Eyeball dev set more important (assuming that you are working on a problem that humans can solve well and that examining the examples helps you gain insight).
+>>>>>>> 68dcd9150d11c4a23bda100bbaca4c0290d40692
 
 ---
 
@@ -378,6 +409,7 @@ having only an Eyeball dev set is that the risk of overfitting the dev set is gr
 There are several reasons building an ML system is easier if you are trying to do a
 task that people can do well:
 
+<<<<<<< HEAD
 1. **Ease of obtaining data from human labelers.** For example, since people recognize
 cat images well, it is straightforward for people to provide high accuracy labels for your
 learning algorithm.
@@ -385,15 +417,27 @@ learning algorithm.
 --
 
 2. **Error analysis can draw on human intuition.** Suppose a speech recognition
+=======
+1. Ease of obtaining data from human labelers. For example, since people recognize
+cat images well, it is straightforward for people to provide high accuracy labels for your
+learning algorithm.
+
+2. Error analysis can draw on human intuition. Suppose a speech recognition
+>>>>>>> 68dcd9150d11c4a23bda100bbaca4c0290d40692
 algorithm is doing worse than human-level recognition. Say it incorrectly transcribes an
 audio clip as “This recipe calls for a pear of apples,” mistaking “pair” for “pear.” You can
 draw on human intuition and try to understand what information a person uses to get the
 correct transcription, and use this knowledge to modify the learning algorithm.
 
+<<<<<<< HEAD
 --
 
 3. **Use human-level performance to estimate the optimal error rate and also set
 a “desired error rate.”** Suppose your algorithm achieves 10% error on a task, but a person
+=======
+3. Use human-level performance to estimate the optimal error rate and also set
+a “desired error rate.” Suppose your algorithm achieves 10% error on a task, but a person
+>>>>>>> 68dcd9150d11c4a23bda100bbaca4c0290d40692
 achieves 2% error. Then we know that the optimal error rate is 2% or lower and the
 avoidable bias is at least 8%. Thus, you should try bias-reducing techniques.
 
@@ -403,13 +447,18 @@ avoidable bias is at least 8%. Thus, you should try bias-reducing techniques.
 
 There are some tasks that even humans aren’t good at. With these applications, we run into the following problems:
 
+<<<<<<< HEAD
 --
 
 1. **It is harder to obtain labels.** For example, it’s hard for human labelers to annotate a
+=======
+1. It is harder to obtain labels. For example, it’s hard for human labelers to annotate a
+>>>>>>> 68dcd9150d11c4a23bda100bbaca4c0290d40692
 database of users with the “optimal” book recommendation. If you operate a website or
 app that sells books, you can obtain data by showing books to users and seeing what they
 buy. If you do not operate such a site, you need to find more creative ways to get data.
 
+<<<<<<< HEAD
 --
 
 2. **Human intuition is harder to count on.** For example, pretty much no one can
@@ -420,6 +469,14 @@ guessing, it is hard to figure out how to improve it.
 
 3. **It is hard to know what the optimal error rate and reasonable desired error
 rate is.** Suppose you already have a book recommendation system that is doing quite
+=======
+2. Human intuition is harder to count on.For example, pretty much no one can
+predict the stock market. So if our stock prediction algorithm does no better than random
+guessing, it is hard to figure out how to improve it.
+
+3. It is hard to know what the optimal error rate and reasonable desired error
+rate is. Suppose you already have a book recommendation system that is doing quite
+>>>>>>> 68dcd9150d11c4a23bda100bbaca4c0290d40692
 well. How do you know how much more it can improve without a human baseline?
 
 ---
